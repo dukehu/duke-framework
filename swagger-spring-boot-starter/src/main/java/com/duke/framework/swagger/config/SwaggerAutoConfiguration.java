@@ -17,6 +17,8 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import static springfox.documentation.builders.PathSelectors.regex;
+
 /**
  * Created duke on 2018/6/20
  */
@@ -44,7 +46,7 @@ public class SwaggerAutoConfiguration {
                 swaggerProperties.getDescription(),
                 swaggerProperties.getVersion(),
                 swaggerProperties.getTermsOfServiceUrl(),
-                new Contact("duke", "", "duke0417@foxmail.com"),
+                new Contact("", "", ""),
                 swaggerProperties.getLicense(),
                 swaggerProperties.getLicenseUrl()
         );
@@ -56,6 +58,7 @@ public class SwaggerAutoConfiguration {
                 .genericModelSubstitutes(ResponseEntity.class)
                 .select()
                 .apis(RequestHandlerSelectors.basePackage(swaggerProperties.getBasePackage()))
+                .paths(regex(".*"))
                 .build();
     }
 
