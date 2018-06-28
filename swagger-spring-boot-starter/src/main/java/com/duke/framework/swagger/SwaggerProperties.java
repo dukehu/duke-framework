@@ -16,7 +16,7 @@ public class SwaggerProperties {
     /**
      * 是否开启swagger
      */
-    private Boolean enabled = true;
+    private Boolean enabled = false;
 
     /**
      * 标题

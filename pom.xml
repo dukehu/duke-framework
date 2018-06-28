@@ -9,6 +9,7 @@
     <modules>
         <module>demo-spring-boot-starter</module>
         <module>swagger-spring-boot-starter</module>
+        <module>sqllog-spring-boot-starter</module>
     </modules>
     <packaging>pom</packaging>
     <name>duke-framework</name>
