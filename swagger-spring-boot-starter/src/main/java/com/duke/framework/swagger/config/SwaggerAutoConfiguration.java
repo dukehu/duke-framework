@@ -35,7 +35,7 @@ public class SwaggerAutoConfiguration {
     private static final Logger LOGGER = LoggerFactory.getLogger(SwaggerAutoConfiguration.class);
 
     public SwaggerAutoConfiguration() {
-        LOGGER.info("swagger-spring-boot-starter autoconfigure");
+        LOGGER.info("swagger starter autoconfigure");
     }
 
     /**

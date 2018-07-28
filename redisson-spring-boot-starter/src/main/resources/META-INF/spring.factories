@@ -1,2 +1,2 @@
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-  com.duke.framework.demo.config.DemoAutoConfigure
+  com.duke.framework.redisson.config.RedissonAutoConfiguration
