@@ -10,6 +10,7 @@
         <module>redisson-spring-boot-starter</module>
         <module>swagger-spring-boot-starter</module>
         <module>sqllog-spring-boot-starter</module>
+        <module>duke-framework-core</module>
     </modules>
     <packaging>pom</packaging>
     <name>duke-framework</name>
