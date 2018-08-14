@@ -6,8 +6,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
+import org.springframework.util.ObjectUtils;
 import sun.security.util.SecurityConstants;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 
@@ -39,15 +41,37 @@ public final class SecurityUtils {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         OAuth2Authentication authentication = (OAuth2Authentication) securityContext.getAuthentication();
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = (UsernamePasswordAuthenticationToken) authentication.getUserAuthentication();
-        Map<String, Object> map = (Map<String, Object>) usernamePasswordAuthenticationToken.getPrincipal();
-        Map<String, Object> userDetailsMap = (Map<String, Object>) map.get("principal");
-        userDetails.setUserId(userDetailsMap.get("userId").toString());
-        userDetails.setGender(Integer.parseInt(userDetailsMap.get("gender").toString()));
-        userDetails.setRealName(userDetailsMap.get("realName").toString());
-        userDetails.setNickName(userDetailsMap.get("nickName").toString());
-        userDetails.setLoginName(userDetailsMap.get("loginName").toString());
-        userDetails.setUserStatus(Integer.parseInt(userDetailsMap.get("userStatus").toString()));
-        userDetails.setAvatar(userDetailsMap.get("avatar").toString());
+        LinkedHashMap<String, Object> principalMap = (LinkedHashMap<String, Object>) usernamePasswordAuthenticationToken.getPrincipal();
+        Map<String, Object> additionalInformation = (Map<String, Object>) principalMap.get("additionalInformation");
+
+        Object userId = additionalInformation.get("userId");
+        Object gender = additionalInformation.get("gender");
+        Object realName = additionalInformation.get("realName");
+        Object nickName = additionalInformation.get("nickName");
+        Object loginName = additionalInformation.get("loginName");
+        Object userStatus = additionalInformation.get("userStatus");
+        Object avatar = additionalInformation.get("avatar");
+        if (!ObjectUtils.isEmpty(userId)) {
+            userDetails.setUserId(userId.toString());
+        }
+        if (!ObjectUtils.isEmpty(gender)) {
+            userDetails.setGender(Integer.parseInt(gender.toString()));
+        }
+        if (!ObjectUtils.isEmpty(realName)) {
+            userDetails.setRealName(realName.toString());
+        }
+        if (!ObjectUtils.isEmpty(nickName)) {
+            userDetails.setNickName(nickName.toString());
+        }
+        if (!ObjectUtils.isEmpty(loginName)) {
+            userDetails.setLoginName(loginName.toString());
+        }
+        if (!ObjectUtils.isEmpty(userStatus)) {
+            userDetails.setUserStatus(Integer.parseInt(userStatus.toString()));
+        }
+        if (!ObjectUtils.isEmpty(avatar)) {
+            userDetails.setAvatar(avatar.toString());
+        }
         if (authentication != null) {
         }
         return userDetails;
