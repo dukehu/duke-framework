@@ -15,4 +15,8 @@ public class CoreConstants {
 
     public static final String AVATAR = "_d_avatar_";
 
+    public static final String SAVE = "save";
+
+    public static final String UPDATE = "update";
+
 }

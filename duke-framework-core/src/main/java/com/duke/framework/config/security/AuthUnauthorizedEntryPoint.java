@@ -1,11 +1,13 @@
 package com.duke.framework.config.security;
 
+import com.duke.framework.web.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.util.ObjectUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -32,11 +34,13 @@ public class AuthUnauthorizedEntryPoint implements AuthenticationEntryPoint {
 
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response,
-                         AuthenticationException authException) throws IOException, ServletException {
-        LOGGER.error("没有权限操作！");
+                         AuthenticationException authException) throws IOException {
+        String uri = request.getRequestURI();
+        LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
+                401, "invalid_token", !ObjectUtils.isEmpty(uri) ? uri : "", "v", authException);
         // 返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(this.objectMapper.writeValueAsString("没有权限操作"));
+        response.getWriter().write(this.objectMapper.writeValueAsString(Response.error(HttpStatus.UNAUTHORIZED.value(), "invalid_token", "无效的令牌或令牌已经过期")));
     }
 }

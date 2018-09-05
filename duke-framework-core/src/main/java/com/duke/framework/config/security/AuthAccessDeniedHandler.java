@@ -1,12 +1,13 @@
 package com.duke.framework.config.security;
 
+import com.duke.framework.web.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
+import org.springframework.util.ObjectUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -29,11 +30,15 @@ public class AuthAccessDeniedHandler implements AccessDeniedHandler {
 
     @Override
     public void handle(HttpServletRequest request, HttpServletResponse response,
-                       AccessDeniedException accessDeniedException) throws IOException, ServletException {
-        LOGGER.error("AuthAccessDeniedHandler！");
-        // 返回json形式的错误信息
-        response.setCharacterEncoding("UTF-8");
-        response.setContentType("application/json");
-        response.getWriter().write(this.objectMapper.writeValueAsString("AuthAccessDeniedHandler"));
+                       AccessDeniedException accessDeniedException) throws IOException {
+        String uri = request.getRequestURI();
+        LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
+                403, "access_denied", !ObjectUtils.isEmpty(uri) ? uri : "", "禁止访问", accessDeniedException);
+        if (this.objectMapper == null) {
+            throw accessDeniedException;
+        } else {
+            response.setContentType("application/json;charset=utf-8");
+            response.getWriter().write(this.objectMapper.writeValueAsString(Response.error(403, "access_denied", "禁止访问")));
+        }
     }
 }
