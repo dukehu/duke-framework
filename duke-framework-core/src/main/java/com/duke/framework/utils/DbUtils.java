@@ -1,29 +1,57 @@
 package com.duke.framework.utils;
 
 import com.duke.framework.domain.DBProperties;
-import org.springframework.util.CollectionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.sql.*;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.Properties;
 
 /**
  * Created duke on 2018/9/5
  */
-class DbUtils {
+@SuppressWarnings("ALL")
+public class DbUtils {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(DbUtils.class);
+
+    private static DBProperties dbProperties;
+
+    /**
+     * 初始化
+     *
+     * @param pro 数据库属性对象
+     */
+    public static void init(DBProperties pro) {
+        dbProperties = pro;
+    }
 
     /**
      * 获取数据库连接
      *
-     * @param dbProperties 数据库信息配置类
      * @return Connection
      */
-    private static Connection getConn(DBProperties dbProperties) {
-        Connection conn = null;
+    private static Connection getConn() {
+        Connection conn;
         try {
-            Class.forName(dbProperties.getDriverClassName()); //classLoader,加载对应驱动
-            conn = DriverManager.getConnection(dbProperties.getUrl(), dbProperties.getUserName(), dbProperties.getPassword());
+            // 加载驱动
+            Class.forName(dbProperties.getDriverClassName());
+            Properties properties = new Properties();
+            properties.setProperty("user", dbProperties.getUserName());
+            properties.setProperty("password", dbProperties.getPassword());
+            // 设置可以获取remarks信息
+            properties.setProperty("remarks", "true");
+            // 设置可以获取tables
+            properties.setProperty("useInformationSchema", "true");
+
+            conn = DriverManager.getConnection(dbProperties.getUrl(), properties);
         } catch (ClassNotFoundException | SQLException e) {
-            e.printStackTrace();
+            LOGGER.error("获取数据库连接", e);
+            return null;
         }
         return conn;
     }
@@ -31,17 +59,15 @@ class DbUtils {
     /**
      * 查询
      *
-     * @param sql          sql
-     * @param dbProperties 数据库属性对象
+     * @param sql sql
      * @return 结果集
      */
-    static ResultSet query(String sql, DBProperties dbProperties) {
+    static ResultSet query(String sql) {
         try {
-            return getConn(dbProperties).prepareStatement(sql).executeQuery();
+            return Objects.requireNonNull(getConn()).prepareStatement(sql).executeQuery();
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-
 }

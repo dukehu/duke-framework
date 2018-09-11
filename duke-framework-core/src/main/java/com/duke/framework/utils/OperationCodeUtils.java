@@ -222,7 +222,8 @@ public class OperationCodeUtils {
      * @return Map
      */
     private static Map<String, OperationCode> getOperationCodeListFromDB(DBProperties dbProperties, String serviceId) throws SQLException {
-        ResultSet resultSet = DbUtils.query(String.format(QUERY_OPERATION_CODE_BY_SERVICE_ID, serviceId), dbProperties);
+        DbUtils.init(dbProperties);
+        ResultSet resultSet = DbUtils.query(String.format(QUERY_OPERATION_CODE_BY_SERVICE_ID, serviceId));
         Map<String, OperationCode> dbOperationCodeMap = new HashMap<>();
         while (resultSet.next()) {
             String code = resultSet.getString("code");

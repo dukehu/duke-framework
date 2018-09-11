@@ -5,7 +5,7 @@ package com.duke.framework.domain;
  */
 public class DBProperties {
 
-    private String url = "jdbc:mysql://%s/%s";
+    private String url = "jdbc:mysql://%s/%s?useUnicode=true&characterEncoding=utf8&useSSL=false";
     private String userName;
     private String password;
 
