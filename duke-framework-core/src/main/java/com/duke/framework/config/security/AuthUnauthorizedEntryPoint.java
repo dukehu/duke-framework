@@ -1,5 +1,7 @@
 package com.duke.framework.config.security;
 
+import com.duke.framework.CoreConstants;
+import com.duke.framework.utils.WebUtils;
 import com.duke.framework.web.Response;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
@@ -38,6 +40,7 @@ public class AuthUnauthorizedEntryPoint implements AuthenticationEntryPoint {
         String uri = request.getRequestURI();
         LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
                 401, "invalid_token", !ObjectUtils.isEmpty(uri) ? uri : "", "v", authException);
+        WebUtils.remove(response, request, CoreConstants.ACCESS_TOKEN, CoreConstants.REFRESH_TOKEN, CoreConstants.AVATAR, CoreConstants.LOGIN_NAME, CoreConstants.USER_ID);
         // 返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");

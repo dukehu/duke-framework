@@ -5,6 +5,8 @@ import org.springframework.util.ObjectUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created duke on 2018/7/29
@@ -36,16 +38,30 @@ public class WebUtils {
      * @param cookieNames cookieNames
      */
     public static void remove(HttpServletResponse response, HttpServletRequest request, String... cookieNames) {
-        if (!ObjectUtils.isEmpty(cookieNames)) {
-            Cookie[] cookies = request.getCookies();
-            if (!ObjectUtils.isEmpty(cookies)) {
-                for (Cookie tmpCookie : cookies) {
-                    tmpCookie.setPath("/");
-                    tmpCookie.setMaxAge(0);
-                    response.addCookie(tmpCookie);
+        if (response == null || request == null || ObjectUtils.isEmpty(cookieNames)) {
+            return;
+        }
+
+        List<Cookie> cookieList = new ArrayList<>();
+
+        Cookie[] cookies = request.getCookies();
+        if (!ObjectUtils.isEmpty(cookies)) {
+            for (Cookie tmpCookie : cookies) {
+                for (String cookieName : cookieNames) {
+                    if (cookieName != null && cookieName.equalsIgnoreCase(tmpCookie.getName())) {
+                        cookieList.add(tmpCookie);
+                        break;
+                    }
                 }
             }
         }
+
+        for (Cookie cookie : cookieList) {
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+        }
+
     }
 
     /**
@@ -57,15 +73,37 @@ public class WebUtils {
      */
     public static String extract(HttpServletRequest request, String cookieName) {
 
+        if (request == null || ObjectUtils.isEmpty(cookieName)) {
+            return null;
+        }
+
+        Cookie cookie = null;
+
         Cookie[] cookies = request.getCookies();
         if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(cookieName)) {
-                    return cookie.getValue();
+            for (Cookie tmpCookie : cookies) {
+                if (tmpCookie.getName().equalsIgnoreCase(cookieName)) {
+                    cookie = tmpCookie;
+                    break;
                 }
             }
         }
 
+        if (cookie != null) {
+            return cookie.getValue();
+        }
+
+        String headerValue = request.getHeader(cookieName);
+
+        if (headerValue != null) {
+            return headerValue;
+        }
+
+        String value = request.getParameter(cookieName);
+
+        if (value != null) {
+            return value;
+        }
         return null;
     }
 
@@ -80,7 +118,7 @@ public class WebUtils {
         Cookie cookie = new Cookie(cookieName, value);
         cookie.setPath("/");
         cookie.setMaxAge(3600);
-        cookie.setDomain("192.168.2.204");
+        cookie.setDomain("localhost");
         response.addCookie(cookie);
     }
 

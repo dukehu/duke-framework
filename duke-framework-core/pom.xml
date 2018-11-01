@@ -51,6 +51,22 @@
             <artifactId>lombok</artifactId>
         </dependency>
         <!-- lombok end -->
+
+        <!-- commons-lang3 begin -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <!-- commons-lang3 end -->
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>fluent-hc</artifactId>
+        </dependency>
     </dependencies>
 
 

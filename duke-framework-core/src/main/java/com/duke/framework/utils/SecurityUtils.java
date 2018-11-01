@@ -7,7 +7,6 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.util.ObjectUtils;
-import sun.security.util.SecurityConstants;
 
 import java.util.LinkedHashMap;
 import java.util.Map;

@@ -1,5 +1,7 @@
 package com.duke.framework;
 
+import java.io.File;
+
 /**
  * Created duke on 2018/8/28
  */
@@ -18,5 +20,7 @@ public class CoreConstants {
     public static final String SAVE = "save";
 
     public static final String UPDATE = "update";
+
+    public static final String USERDIR = "user.dir";
 
 }
