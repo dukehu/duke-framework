@@ -47,6 +47,17 @@ public class FileUtils {
     }
 
     /**
+     * 拼装上传文件的文件夹路径
+     *
+     * @param serviceId 服务id
+     * @return 文件夹路径
+     */
+    public static String getPdfRelativeFilePath(String serviceId) {
+        Calendar calendar = Calendar.getInstance();
+        return "/nologin/pdf/" + serviceId + "/" + calendar.get(1) + "/" + (calendar.get(2) + 1) + "/" + calendar.get(5);
+    }
+
+    /**
      * 截取文件名称，去掉后缀
      *
      * @param originalFileName 文件原始名称
