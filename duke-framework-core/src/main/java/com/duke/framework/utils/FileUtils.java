@@ -47,7 +47,7 @@ public class FileUtils {
     }
 
     /**
-     * 拼装上传文件的文件夹路径
+     * 拼装上传文件的文件夹路径（文件预览时pdf的文件路径）
      *
      * @param serviceId 服务id
      * @return 文件夹路径
@@ -55,6 +55,17 @@ public class FileUtils {
     public static String getPdfRelativeFilePath(String serviceId) {
         Calendar calendar = Calendar.getInstance();
         return "/nologin/pdf/" + serviceId + "/" + calendar.get(1) + "/" + (calendar.get(2) + 1) + "/" + calendar.get(5);
+    }
+
+    /**
+     * 拼装上传文件的文件夹路径（文件分块上传时块的文件路径）
+     *
+     * @param serviceId 服务id
+     * @return 文件夹路径
+     */
+    public static String getChunkRelativeFilePath(String serviceId) {
+        Calendar calendar = Calendar.getInstance();
+        return "/nologin/chunk/" + serviceId + "/" + calendar.get(1) + "/" + (calendar.get(2) + 1) + "/" + calendar.get(5);
     }
 
     /**
