@@ -41,7 +41,7 @@ public class FileUtils {
         Calendar calendar = Calendar.getInstance();
         // 如："/blog/2018/07/02"
         return "/nologin/" + serviceId +
-                "/" + calendar.get(Calendar.YEAR) +
+                "/files/" + calendar.get(Calendar.YEAR) +
                 "/" + (calendar.get(Calendar.MONTH) + 1) +
                 "/" + calendar.get(Calendar.DATE);
     }
@@ -52,10 +52,42 @@ public class FileUtils {
      * @param serviceId 服务id
      * @return 文件夹路径
      */
+    public static String getPdfPreviewRelativeFilePath(String serviceId) {
+        Calendar calendar = Calendar.getInstance();
+        return "/nologin/" + serviceId +
+                "/pdf_preview/" + calendar.get(Calendar.YEAR) +
+                "/" + (calendar.get(Calendar.MONTH) + 1) +
+                "/" + calendar.get(Calendar.DATE);
+    }
+
+    /**
+     * pdf转word之后pdf的文件夹路径
+     *
+     * @param serviceId 服务id
+     * @return 文件夹路径
+     */
     public static String getPdfRelativeFilePath(String serviceId) {
         Calendar calendar = Calendar.getInstance();
-        return "/nologin/pdf/" + serviceId + "/" + calendar.get(1) + "/" + (calendar.get(2) + 1) + "/" + calendar.get(5);
+        return "/nologin/" + serviceId +
+                "/pdf/" + calendar.get(Calendar.YEAR) +
+                "/" + (calendar.get(Calendar.MONTH) + 1) +
+                "/" + calendar.get(Calendar.DATE);
     }
+
+    /**
+     * pdf转word之后word的文件夹路径
+     *
+     * @param serviceId 服务id
+     * @return 文件夹路径
+     */
+    public static String getWordRelativeFilePath(String serviceId) {
+        Calendar calendar = Calendar.getInstance();
+        return "/nologin/" + serviceId +
+                "/word/" + calendar.get(Calendar.YEAR) +
+                "/" + (calendar.get(Calendar.MONTH) + 1) +
+                "/" + calendar.get(Calendar.DATE);
+    }
+
 
     /**
      * 拼装上传文件的文件夹路径（文件分块上传时块的文件路径）
@@ -65,7 +97,10 @@ public class FileUtils {
      */
     public static String getChunkRelativeFilePath(String serviceId) {
         Calendar calendar = Calendar.getInstance();
-        return "/nologin/chunk/" + serviceId + "/" + calendar.get(1) + "/" + (calendar.get(2) + 1) + "/" + calendar.get(5);
+        return "/nologin/" + serviceId +
+                "/chunk/" + calendar.get(Calendar.YEAR) +
+                "/" + (calendar.get(Calendar.MONTH) + 1) +
+                "/" + calendar.get(Calendar.DATE);
     }
 
     /**
