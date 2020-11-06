@@ -31,11 +31,11 @@ public class OperationCodeUtils {
             "where service_id = '%s'";
 
     private static String INSERT_OPERATION_CODE_SQL = "insert into auth_operation_code(" +
-            "id, service_id, name, code, memo, path, controller, request_method, creater, creater_time, modifier, modified_time" +
+            "id, service_id, name, code, memo, path, controller, request_method, url, creater, creater_time, modifier, modified_time" +
             ")" +
             " values " +
             "(" +
-            "'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'" +
+            "'%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s', '%s'" +
             ");";
 
     private static String UPDATE_OPERATION_CODE_SQL = "update auth_operation_code " +
@@ -172,7 +172,7 @@ public class OperationCodeUtils {
                 // 新增操作码
                 sql = String.format(INSERT_OPERATION_CODE_SQL,
                         UUID.randomUUID().toString(), serviceId, operationCode.getName(), operationCode.getCode(), operationCode.getMemo(),
-                        operationCode.getPath(), operationCode.getController(), operationCode.getRequestMethod(), CREATER, dateStr, CREATER, dateStr);
+                        operationCode.getPath(), operationCode.getController(), operationCode.getRequestMethod(), operationCode.getPath(), CREATER, dateStr, CREATER, dateStr);
                 insertSqls.add(sql);
             }
         });

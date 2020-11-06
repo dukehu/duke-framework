@@ -8,10 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.util.ObjectUtils;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,12 +38,19 @@ public class AuthUnauthorizedEntryPoint implements AuthenticationEntryPoint {
     public void commence(HttpServletRequest request, HttpServletResponse response,
                          AuthenticationException authException) throws IOException {
         String uri = request.getRequestURI();
-        LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
-                401, "invalid_token", !ObjectUtils.isEmpty(uri) ? uri : "", "v", authException);
         WebUtils.remove(response, request, CoreConstants.ACCESS_TOKEN, CoreConstants.REFRESH_TOKEN, CoreConstants.AVATAR, CoreConstants.LOGIN_NAME, CoreConstants.USER_ID);
         // 返回json形式的错误信息
         response.setCharacterEncoding("UTF-8");
         response.setContentType("application/json");
-        response.getWriter().write(this.objectMapper.writeValueAsString(Response.error(HttpStatus.UNAUTHORIZED.value(), "invalid_token", "无效的令牌或令牌已经过期")));
+        if (authException instanceof UsernameNotFoundException) {
+            LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
+                    401, "username_not_found", !ObjectUtils.isEmpty(uri) ? uri : "", "v", authException);
+
+            response.getWriter().write(this.objectMapper.writeValueAsString(Response.error(HttpStatus.UNAUTHORIZED.value(), "username_not_found", authException.getMessage())));
+        } else {
+            LOGGER.error("Exception: status[{}], code[{}], uri[{}], message[{}], error[{}]",
+                    401, "invalid_token", !ObjectUtils.isEmpty(uri) ? uri : "", "v", authException);
+            response.getWriter().write(this.objectMapper.writeValueAsString(Response.error(HttpStatus.UNAUTHORIZED.value(), "invalid_token", "无效的令牌或令牌已经过期")));
+        }
     }
 }
